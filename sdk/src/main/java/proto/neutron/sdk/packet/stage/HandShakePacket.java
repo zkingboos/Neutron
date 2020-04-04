@@ -1,9 +1,11 @@
 package proto.neutron.sdk.packet.stage;
 
 import lombok.Getter;
+import lombok.ToString;
 import proto.neutron.sdk.ProtoPacket;
 import proto.neutron.sdk.network.PacketBuf;
 
+@ToString
 @Getter
 public final class HandShakePacket extends ProtoPacket {
 

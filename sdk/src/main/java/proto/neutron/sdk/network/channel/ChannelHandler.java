@@ -7,11 +7,10 @@ import proto.neutron.api.network.info.Stage;
 import proto.neutron.sdk.NeutronServer;
 import proto.neutron.sdk.ProtoPacket;
 import proto.neutron.sdk.packet.stage.HandShakePacket;
-import proto.neutron.sdk.packet.stage.LoginPacket;
 
 import java.net.InetSocketAddress;
 
-public final class ChannelBound extends SimpleChannelInboundHandler<ProtoPacket> {
+public final class ChannelHandler extends SimpleChannelInboundHandler<ProtoPacket> {
 
     @Override
     public void channelActive(
@@ -43,9 +42,6 @@ public final class ChannelBound extends SimpleChannelInboundHandler<ProtoPacket>
             int id = ((HandShakePacket) protoPacket).getStage();
 
             switch (id) {
-                case 0:
-                    session.setSessionStage(Stage.HANDSHAKE);
-                    break;
                 case 1:
                     session.setSessionStage(Stage.STATUS);
                     break;
@@ -54,16 +50,12 @@ public final class ChannelBound extends SimpleChannelInboundHandler<ProtoPacket>
                     break;
                 default:
                     ctx.channel().close();
-                    return;
+                    break;
             }
             return;
-
         }
 
-        if(protoPacket instanceof LoginPacket) {
-            LoginPacket loginPacket = (LoginPacket) protoPacket;
-
-            ctx.channel().writeAndFlush(loginPacket);
-        }
+        System.out.println(protoPacket);
+        ctx.channel().writeAndFlush(protoPacket);
     }
 }

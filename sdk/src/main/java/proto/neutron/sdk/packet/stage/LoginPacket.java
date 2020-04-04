@@ -1,17 +1,15 @@
 package proto.neutron.sdk.packet.stage;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 import proto.neutron.sdk.ProtoPacket;
 import proto.neutron.sdk.network.PacketBuf;
 
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
-@Setter
+@ToString
 @Getter
-@NoArgsConstructor
 public final class LoginPacket extends ProtoPacket {
 
     private UUID uuid;
@@ -25,6 +23,7 @@ public final class LoginPacket extends ProtoPacket {
 
     @Override
     public void write(PacketBuf buf) {
+        buf.writeByte(0x02);
         buf.writeString(uuid.toString());
         buf.writeString(username);
     }

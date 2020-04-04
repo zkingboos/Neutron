@@ -1,16 +1,20 @@
 package proto.neutron.sdk.packet.stage;
 
-import lombok.Getter;
 import proto.neutron.sdk.ProtoPacket;
 import proto.neutron.sdk.network.PacketBuf;
 
-@Getter
 public final class PingPacket extends ProtoPacket {
 
-    private long ping;
+    private long payload;
 
     @Override
     public void read(PacketBuf buf) {
-        ping = buf.readVarLong();
+        payload = buf.readLong();
+    }
+
+    @Override
+    public void write(PacketBuf buf) {
+        buf.writeByte(0x01);
+        buf.writeLong(payload);
     }
 }

@@ -34,7 +34,8 @@ public final class PacketContainer {
         PACKET_INFO.add(PacketInfo.builder()
                 .name("PingPacket")
                 .inboundId(0x01)
-                .direction(Direction.INBOUND)
+                .outboundId(0x01)
+                .direction(Direction.BOTH)
                 .stage(Stage.STATUS)
                 .clazz(PingPacket.class)
                 .supplier(PingPacket::new)
@@ -51,6 +52,18 @@ public final class PacketContainer {
                 .build());
     }
 
+    public static PacketInfo findByOutId(
+            Stage stage,
+            int id
+    ) {
+        for (PacketInfo packetInfo : PACKET_INFO) {
+            if(packetInfo.getOutboundId() == id && packetInfo.getStage() == stage) {
+                return packetInfo;
+            }
+        }
+        return null;
+    }
+
     public static PacketInfo findByInId(
             Stage stage,
             int id
@@ -60,6 +73,15 @@ public final class PacketContainer {
                 return packetInfo;
             }
         }
+        return null;
+    }
+
+    public static ProtoPacket doByOutId(
+            Stage stage,
+            int id
+    ) {
+        PacketInfo info = findByOutId(stage, id);
+        if(info != null) return info.initialize();
         return null;
     }
 

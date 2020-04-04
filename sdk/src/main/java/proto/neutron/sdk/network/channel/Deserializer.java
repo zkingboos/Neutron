@@ -32,7 +32,11 @@ public final class Deserializer extends ByteToMessageDecoder {
 
         System.out.println("Size: " + size + " id: " + id);
 
+        System.out.println("Stage: " + stage);
+
         ProtoPacket packet = PacketContainer.doByInId(stage, id);
+
+        System.out.println(packet);
 
         if(packet == null) return;
 
